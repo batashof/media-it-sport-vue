@@ -1,32 +1,40 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { useAppFetch } from '~/api/useAppFetch'
+import { apiRoutes } from '~/api/routes'
 
 export const useUserStore = defineStore('user', () => {
-  /**
-   * Current name of the user.
-   */
-  const savedName = ref('')
-  const previousNames = ref(new Set<string>())
+  const router = useRouter()
 
-  const usedNames = computed(() => Array.from(previousNames.value))
-  const otherNames = computed(() => usedNames.value.filter(name => name !== savedName.value))
+  const email = ref<string>('')
+  const password = ref<string>('')
+  const user = ref(localStorage.getItem('user'))
 
-  /**
-   * Changes the current name of the user and saves the one that was used
-   * before.
-   *
-   * @param name - new name to set
-   */
-  function setNewName(name: string) {
-    if (savedName.value)
-      previousNames.value.add(savedName.value)
+  const { post, data, error } = useAppFetch(apiRoutes.login, { immediate: false })
 
-    savedName.value = name
+  const isAuth = computed(() => !!user.value)
+  const token = computed(() => JSON.parse(user.value ?? '{}')?.access)
+
+  async function login() {
+    await post({ email: email.value, password: password.value }).execute()
+    localStorage.setItem('user', data.value as string)
+    user.value = data.value as string
+    if (!error.value)
+      router.push('/')
+  }
+
+  function logout() {
+    localStorage.removeItem('user')
+    user.value = null
   }
 
   return {
-    setNewName,
-    otherNames,
-    savedName,
+    login,
+    email,
+    password,
+    isAuth,
+    token,
+    user,
+    logout,
   }
 })
 

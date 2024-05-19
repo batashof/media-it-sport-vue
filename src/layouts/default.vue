@@ -1,12 +1,13 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <main
-    px-4 py-10
-    text="center gray-700 dark:gray-200"
-  >
-    <RouterView />
-    <TheFooter />
-    <div mx-auto mt-5 text-center text-sm opacity-50>
-      [Default Layout]
-    </div>
-  </main>
+  <v-layout>
+    <Header />
+    <v-main class="d-flex position-relative h-100vh justify-center overflow-auto">
+      <v-container>
+        <RouterView />
+      </v-container>
+    </v-main>
+  </v-layout>
 </template>

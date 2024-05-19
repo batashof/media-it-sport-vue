@@ -16,6 +16,7 @@ import Shiki from '@shikijs/markdown-it'
 import WebfontDownload from 'vite-plugin-webfont-dl'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
+import vuetify from 'vite-plugin-vuetify'
 
 export default defineConfig({
   resolve: {
@@ -141,6 +142,9 @@ export default defineConfig({
 
     // https://github.com/webfansplz/vite-plugin-vue-devtools
     VueDevTools(),
+
+    // https://github.com/vuetifyjs/vuetify-loader/
+    vuetify({ autoImport: true }),
   ],
 
   // https://github.com/vitest-dev/vitest
@@ -164,5 +168,15 @@ export default defineConfig({
   ssr: {
     // TODO: workaround until they support native ESM
     noExternal: ['workbox-window', /vue-i18n/],
+  },
+
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://dev.scoringsystems.org/',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 })

@@ -13,6 +13,10 @@ html.dark {
   color-scheme: dark;
 }
 
+html {
+  overflow: hidden;
+}
+
 #nprogress {
   pointer-events: none;
 }
@@ -26,4 +30,21 @@ html.dark {
   left: 0;
   width: 100%;
   height: 2px;
+}
+
+.v-main::-webkit-scrollbar {
+  width: 5px;
+}
+
+.v-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.v-main::-webkit-scrollbar-thumb {
+  background: lightgray;
+  border-radius: 8px;
+}
+
+.v-divider {
+  border-color: #121212;
 }

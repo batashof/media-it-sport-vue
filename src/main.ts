@@ -17,6 +17,11 @@ export const createApp = ViteSSG(
     base: import.meta.env.BASE_URL,
   },
   (ctx) => {
+    ctx.router.beforeEach(async (to) => {
+      const { isAuth } = useUserStore()
+      if (!isAuth && to.name !== '/login')
+        return '/login'
+    })
     // install all modules under `modules/`
     Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
       .forEach(i => i.install?.(ctx))

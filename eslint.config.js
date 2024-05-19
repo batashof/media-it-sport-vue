@@ -5,5 +5,6 @@ export default antfu(
   {
     unocss: true,
     formatters: true,
+    ignores: ['pnpm-lock.yaml', 'auto-imports.d.ts', 'components.d.ts', ''],
   },
 )

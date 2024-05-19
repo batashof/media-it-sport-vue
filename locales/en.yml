@@ -12,3 +12,40 @@ intro:
   aka: Also known as
   whats-your-name: What's your name?
 not-found: Not found
+login:
+  title: Log in to account
+  subtitle: No account?
+  create: Create an account
+  forgot: Forgot password?
+  button: Log in
+index:
+  title: All gymnastics competitions
+competitions:
+  status:
+    upcoming: Upcoming
+    registration_open: Registration Open
+    registration_closed: Registration Closed
+    active: Active
+    finished: Finished
+    canceled: Canceled
+    draft: Draft
+  tabs:
+    about: About
+    categories: Categories
+    responsible_persons: Responsible persons
+    documents: Documents
+  tab_content:
+    about:
+      host: Host
+      level: Competition leve
+  contacts:
+    title: Point of contact
+    name: Point of contact
+    phone: Phone number
+    email: Email
+
+account_menu:
+  users: Users
+  competitions: Competitions
+  profile: Profile
+  logout: Log out

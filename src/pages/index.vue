@@ -1,56 +1,39 @@
 <script setup lang="ts">
+import { useAppFetch } from '~/api/useAppFetch'
+import { apiRoutes } from '~/api/routes'
+import type { CompetitionModel } from '~/types'
+
 defineOptions({
   name: 'IndexPage',
 })
-const user = useUserStore()
-const name = ref(user.savedName)
-
-const router = useRouter()
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
 
 const { t } = useI18n()
+const { data } = useAppFetch(apiRoutes.competitions).json()
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
+  <h1 class="mt-8 text-center text-12">
+    {{ t('index.title') }}
+  </h1>
 
-    <div py-4 />
-
-    <TheInput
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        m-3 text-sm btn
-        :disabled="!name"
-        @click="go"
+  <v-data-iterator class="pb-10" :items="data || []" :items-per-page="5">
+    <template #default="{ items }">
+      <template
+        v-for="item in items"
+        :key="item.raw.uuid"
       >
-        {{ t('button.go') }}
-      </button>
-    </div>
-  </div>
+        <RouterLink :to="`${apiRoutes.competitions}preview/${item.raw.uuid}`">
+          <CompetitionCard :data="item.raw as CompetitionModel" hover />
+        </RouterLink>
+        <br>
+      </template>
+    </template>
+    <template #footer="{ pageCount, setPage }">
+      <v-pagination
+        :length="pageCount"
+        :total-visible="7"
+        @update:model-value="(value) => setPage(value)"
+      />
+    </template>
+  </v-data-iterator>
 </template>
-
-<route lang="yaml">
-meta:
-  layout: home
-</route>
